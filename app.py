@@ -40,6 +40,83 @@ def chat():
     }
     return jsonify(response), 200
 
+@app.route("/classify", methods=['POST'])
+def classify():
+    '''
+    request should be in the form of
+    {
+        user_message: <USER MESSAGE>
+    }
+    '''
+    req = request.get_json()
+    model="gpt-3.5-turbo"
+    msg = req['user_message'].strip()
+    classification = req['classification'].strip()
+    msg = "Classify the sentiment of the following message into " + classification + ": " + msg
+    print(f'User message: {msg}')
+    
+    chat_history.append({"role": "user", "content": msg},)
+    chat_response = openai.ChatCompletion.create(
+        model=model,
+        messages=chat_history
+    )
+    reply = chat_response['choices'][0]['message']
+    chat_history.append(reply)
+    response = {
+        "chat_msg": reply['content']
+    }
+    return jsonify(response), 200
+
+@app.route("/code", methods=['POST'])
+def code():
+    '''
+    request should be in the form of
+    {
+        user_message: <USER MESSAGE>
+    }
+    '''
+    req = request.get_json()
+    model="gpt-3.5-turbo"
+    msg = req['user_message'].strip()
+    language = req['language'].strip()
+    msg = "In " + language + " code the following: " + msg
+    print(f'User message: {msg}')
+    
+    chat_history.append({"role": "user", "content": msg},)
+    chat_response = openai.ChatCompletion.create(
+        model=model,
+        messages=chat_history
+    )
+    reply = chat_response['choices'][0]['message']
+    chat_history.append(reply)
+    response = {
+        "chat_msg": reply['content']
+    }
+    return jsonify(response), 200
+
+@app.route("/image", methods=['POST'])
+def generate_image():
+    '''
+    request should be in the form of
+    {
+        image_prompt: <IMAGE PROMPT>
+    }
+    '''
+    req = request.get_json()
+    msg = req['image_prompt'].strip()
+    print(f'Image prompt: {msg}')
+    
+    image_response = openai.Image.create(
+        prompt=msg,
+        n=1,
+        size="1024x1024"
+    )
+    reply = image_response['data'][0]['url']
+    response = {
+        "image_response": reply
+    }
+    return jsonify(response), 200
+
 
 @app.route("/")
 def hello_world():
