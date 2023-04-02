@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <div className='header'>
-        <h1>Chatbot</h1>
+        <h1>BeeboBot</h1>
       </div>
       
       <div className="chatBox">

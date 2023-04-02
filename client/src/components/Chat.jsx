@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../App.css';
 import Messages from './Messages';
-import ChatBox from "./ChatBox";
+// import ChatBox from "./ChatBox";
+import { Flex, Input, Button, Heading } from "@chakra-ui/react";
+import axios from 'axios'
 
 const Chat = () => {
-	const [messages, setMessages] = useState([
+  const [inputMessage, setInputMessage] = useState(""); // holds input from user
+  const [response, setResponse] = useState(''); // hold the response to the input message
+  // holds message history
+	const [messages, setMessages] = useState([ 
     { role: "system", content: "Hi, My Name is sophiasaur" },
     { role: "me", content: "Hey there" },
     { role: "me", content: "Myself beebo" },
@@ -12,37 +17,80 @@ const Chat = () => {
       role: "system",
       content:
         "Nice to meet you. You can send me message and i'll reply you with same message."
+      }
+    ]);
+  // use effect to update history TODO:
+  
+  // update messages after response has been updated
+  useEffect(() => {
+    if (response) {
+      setMessages((old) => [...old, { role: 'system', content: response }]);
     }
-  ]);
+  }, [response]);
 
-	const [inputMessage, setInputMessage] = useState("");
-
-  const handleSendMessage = () => {
+  // handle the users inputted message
+  const handleSendMessage = async () => {
+    console.log(inputMessage)
+    // set the new input message to the one received from the user
     if (!inputMessage.trim().length) {
       return;
     }
-    const data = inputMessage;
-
-    setMessages((old) => [...old, { role: "me", content: data }]);
+    // get the response from MeowAI
+    const { data } = await axios.post('/chat', { user_message: inputMessage});
+    console.log(data)
+    console.log(data.chat_msg)
+    // get the response back from MeowAI
+    setResponse(data.chat_msg);
+    setMessages((old) => [...old, { role: "me", content: inputMessage }]);
     setInputMessage("");
 
-    setTimeout(() => {
-      setMessages((old) => [...old, { role: "system", content: data }]);
-    }, 1000);
+    // setTimeout(() => {
+    //   setMessages((old) => [...old, { role: "system", content: response }]);
+    // }, 500);
   };
 
 	return (
 		<div>
-			<h2>
-				chat with me pleaseeeeeee
-			</h2>
+			<Heading as='h2' size='sm'>Hello, I'm ChatBot! I am looking forward to talking with you!</Heading>
+
 			<div>
 				<Messages messages={messages} />
-				<ChatBox
+        <Flex w="100%" mt="5">
+          <Input
+            placeholder="Type Something..."
+            border="none"
+            borderRadius="none"
+            _focus={{
+              border: "1px solid black",
+            }}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSendMessage();
+              }
+            }}
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+          />
+          <Button
+            bg="black"
+            color="white"
+            borderRadius="none"
+            _hover={{
+              bg: "white",
+              color: "black",
+              border: "1px solid black",
+            }}
+            disabled={inputMessage.trim().length <= 0}
+            onClick={handleSendMessage}
+          >
+            Send
+          </Button>
+        </Flex>
+				{/* <ChatBox
           inputMessage={inputMessage}
           setInputMessage={setInputMessage}
-          handleSendMessage={handleSendMessage}
-        />
+          // handleSendMessage={handleSendMessage}
+        /> */}
 			</div>
 		</div>
 	);
