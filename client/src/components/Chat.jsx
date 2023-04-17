@@ -1,60 +1,62 @@
 import React, { useState, useEffect } from "react";
-import '../App.css';
-import Messages from './Messages';
+import "../App.css";
+import Messages from "./Messages";
 // import ChatBox from "./ChatBox";
 import { Flex, Input, Button, Heading } from "@chakra-ui/react";
-import axios from 'axios'
+import axios from "axios";
 
 const Chat = () => {
   const [inputMessage, setInputMessage] = useState(""); // holds input from user
-  const [response, setResponse] = useState(''); // hold the response to the input message
+  const [response, setResponse] = useState(""); // hold the response to the input message
   // holds message history
-	const [messages, setMessages] = useState([ 
-    { role: "system", content: "Hi, My Name is sophiasaur" },
-    { role: "me", content: "Hey there" },
-    { role: "me", content: "Myself beebo" },
+  const [messages, setMessages] = useState([
     {
       role: "system",
-      content:
-        "Nice to meet you. You can send me message and i'll reply you with same message."
-      }
-    ]);
+      content: "Hi, my name is Coach Bot.",
+    },
+  ]);
   // use effect to update history TODO:
-  
+
   // update messages after response has been updated
   useEffect(() => {
     if (response) {
-      setMessages((old) => [...old, { role: 'system', content: response }]);
+      setMessages((old) => [
+        ...old.filter(({ task }) => task !== "Loading"),
+        { role: "system", content: response },
+      ]);
     }
   }, [response]);
 
   // handle the users inputted message
   const handleSendMessage = async () => {
-    console.log(inputMessage)
+    console.log(inputMessage);
     // set the new input message to the one received from the user
     if (!inputMessage.trim().length) {
       return;
     }
+    const msg = inputMessage;
+    setInputMessage("");
+    setMessages((old) => [
+      ...old,
+      { role: "me", content: msg },
+      { role: "system", content: "...Loading response...", task: "Loading" },
+    ]);
     // get the response from MeowAI
-    const { data } = await axios.post('/chat', { user_message: inputMessage});
-    console.log(data)
-    console.log(data.chat_msg)
+    const { data } = await axios.post("/chat", { user_message: msg });
+    console.log(data);
+    console.log(data.chat_msg);
     // get the response back from MeowAI
     setResponse(data.chat_msg);
-    setMessages((old) => [...old, { role: "me", content: inputMessage }]);
-    setInputMessage("");
-
-    // setTimeout(() => {
-    //   setMessages((old) => [...old, { role: "system", content: response }]);
-    // }, 500);
   };
 
-	return (
-		<div>
-			<Heading as='h2' size='sm'>Hello, I'm ChatBot! I am looking forward to talking with you!</Heading>
+  return (
+    <div>
+      <Heading as="h2" size="sm">
+        The virtual assistant for DigitalCoach.
+      </Heading>
 
-			<div>
-				<Messages messages={messages} />
+      <div>
+        <Messages messages={messages} />
         <Flex w="100%" mt="5">
           <Input
             placeholder="Type Something..."
@@ -86,14 +88,14 @@ const Chat = () => {
             Send
           </Button>
         </Flex>
-				{/* <ChatBox
+        {/* <ChatBox
           inputMessage={inputMessage}
           setInputMessage={setInputMessage}
           // handleSendMessage={handleSendMessage}
         /> */}
-			</div>
-		</div>
-	);
+      </div>
+    </div>
+  );
 };
 
 export default Chat;
