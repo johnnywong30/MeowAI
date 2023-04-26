@@ -6,22 +6,22 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
+    port: 8080,
     proxy: {
       '/chat': {
-        target: 'http://localhost:8000',
+        target: 'http://meowai.eba-pm8tsbpj.us-west-2.elasticbeanstalk.com/',
         changeOrigin: true,
       },
       '/classify': {
-        target: 'http://localhost:8000',
+        target: 'http://meowai.eba-pm8tsbpj.us-west-2.elasticbeanstalk.com/',
         changeOrigin: true,
       },
       '/code': {
-        target: 'http://localhost:8000',
+        target: 'http://meowai.eba-pm8tsbpj.us-west-2.elasticbeanstalk.com/',
         changeOrigin: true,
       },
       '/image': {
-        target: 'http://localhost:8000',
+        target: 'http://meowai.eba-pm8tsbpj.us-west-2.elasticbeanstalk.com/',
         changeOrigin: true,
       },
     },
