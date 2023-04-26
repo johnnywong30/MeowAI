@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# vite build
+.client/dist
+
 # python stuff
 __pycache__/
 py_env/
