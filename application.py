@@ -6,7 +6,7 @@ import openai
 # load_dotenv()
 
 application = Flask(__name__,
-            static_folder='client/dist',
+            # static_folder='client/dist',
             )
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -124,10 +124,11 @@ def generate_image():
 @application.route('/', defaults={'path': ''})
 @application.route('/<path:path>')
 def root(path):
-    if path != "" and os.path.exists(application.static_folder + '/' + path):
-        return send_from_directory(application.static_folder, path)
-    else:
-        return send_from_directory(application.static_folder, 'index.html')
+    # if path != "" and os.path.exists(application.static_folder + '/' + path):
+    #     return send_from_directory(application.static_folder, path)
+    # else:
+    #     return send_from_directory(application.static_folder, 'index.html')
+    return 'hi'
 
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
