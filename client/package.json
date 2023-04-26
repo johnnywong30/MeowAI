@@ -9,6 +9,10 @@
     "preview": "vite preview",
     "start": "vite"
   },
+  "engines": {
+    "npm": ">=9.0.0",
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
