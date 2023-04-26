@@ -5,7 +5,7 @@ import openai
 
 # load_dotenv()
 
-app = Flask(__name__,
+application = Flask(__name__,
             static_folder='client/dist',
             )
 
@@ -13,11 +13,11 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 chat_history = [{"role": "system", "content": "You are a helpful assistant."}]
 
-@app.route("/history", methods=['GET'])
+@application.route("/history", methods=['GET'])
 def history():
     return jsonify(chat_history), 200
 
-@app.route("/chat", methods=['POST'])
+@application.route("/chat", methods=['POST'])
 def chat():
     '''
     request should be in the form of
@@ -42,7 +42,7 @@ def chat():
     }
     return jsonify(response), 200
 
-@app.route("/classify", methods=['POST'])
+@application.route("/classify", methods=['POST'])
 def classify():
     '''
     request should be in the form of
@@ -69,7 +69,7 @@ def classify():
     }
     return jsonify(response), 200
 
-@app.route("/code", methods=['POST'])
+@application.route("/code", methods=['POST'])
 def code():
     '''
     request should be in the form of
@@ -96,7 +96,7 @@ def code():
     }
     return jsonify(response), 200
 
-@app.route("/image", methods=['POST'])
+@application.route("/image", methods=['POST'])
 def generate_image():
     '''
     request should be in the form of
@@ -121,17 +121,17 @@ def generate_image():
 
 
 # Serve React App
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@application.route('/', defaults={'path': ''})
+@application.route('/<path:path>')
 def root(path):
-    if path != "" and os.path.exists(app.static_folder + '/' + path):
-        return send_from_directory(app.static_folder, path)
+    if path != "" and os.path.exists(application.static_folder + '/' + path):
+        return send_from_directory(application.static_folder, path)
     else:
-        return send_from_directory(app.static_folder, 'index.html')
+        return send_from_directory(application.static_folder, 'index.html')
 
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
-    app.debug = True
-    app.run(port=8000)
+    application.debug = True
+    application.run(port=8000)
     
