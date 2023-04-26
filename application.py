@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request, send_from_directory
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 import openai
 
-load_dotenv()
+# load_dotenv()
 
 app = Flask(__name__,
             static_folder='client/dist',
