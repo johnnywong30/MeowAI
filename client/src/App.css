@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Asap&family=Roboto:ital,wght@0,500;0,900;1,500&display=swap");
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -34,10 +36,52 @@
   }
 }
 
-.header {
-  padding: 2em;
+
+/* .header h1 {
+  font-size: 70px;
+  font-weight: 600;
+  background-image: linear-gradient(to left, #553c9a, #b393d3);
+  color: transparent;
+} */
+
+header {
+  width: 100%;
+  display: inline-block;
+  flex-direction: column;
+  align-items: center;
+}
+header h1 {
+  position: relative;
+  left: 10%;
+  width: 80%;
+  font-size: 60px;
+  font-weight: 600;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;   
+}
+header .header-1{
+  background-image: repeating-radial-gradient(farthest-side at 5px 5px,#553c9a, #c66bf0, #553c9a);
 }
 
 .read-the-docs {
   color: #888;
+}
+
+/* https://codepen.io/shter/pen/BPvbKQ */
+.navlink {
+  border:none;
+  background:hsl(0, 0%, 92%);
+  color:hsl(0, 0%, 23%);
+  box-shadow:1px 1px 2px rgba(21, 21, 21, 0.1);
+  cursor:pointer;
+  font-size:1.5rem;
+  font-family: 'Dosis', sans-serif;
+  margin:0 1rem;
+  padding:.25rem 2rem;
+  transition:all .25s ease-in-out;
+}
+
+.navlink:focus, .navlink:hover {
+  box-shadow:1px 1px 2px rgba(21, 21, 21, 0.2);
 }
