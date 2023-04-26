@@ -1,11 +1,13 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from dotenv import load_dotenv
 import os
 import openai
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='client/dist',
+            )
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -118,12 +120,18 @@ def generate_image():
     return jsonify(response), 200
 
 
-@app.route("/")
-def hello_world():
-    return f'<p>hi</p>'
+# Serve React App
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def root(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
     app.debug = True
     app.run(port=8000)
+    
