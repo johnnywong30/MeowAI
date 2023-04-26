@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
 # from dotenv import load_dotenv
 import os
 import openai
@@ -8,6 +9,8 @@ import openai
 application = Flask(__name__,
             # static_folder='client/dist',
             )
+
+CORS(application)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
