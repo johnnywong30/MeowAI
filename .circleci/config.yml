@@ -40,14 +40,15 @@ workflows:
       #     requires:
       #       - build_flask_app
       - build_vite_app
-      # - eb/deploy:
-      #     context: aws-credentials
-      #     environment-name: MeowAI-Page
-      #     platform-version: php-8.1
-      #     filters:
-      #       branches:
-      #         only:
-      #           - flask_eb
-      #     label: version-<<pipeline.number>>
-      #     requires:
-      #       - build_vite_app
+      - eb/deploy:
+          context: aws-credentials
+          app-dir: /client/dist/
+          environment-name: MeowAI-Page
+          platform-version: php-8.1
+          filters:
+            branches:
+              only:
+                - flask_eb
+          label: version-<<pipeline.number>>
+          requires:
+            - build_vite_app
