@@ -18,10 +18,27 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - run: cd client/; npm install; npm run build; ls -al dist
+      - run:
+          name: Build App
+          command: |
+            cd client/
+            npm install
+            npm run build
+            ls -al dist
+            cd dist
+      - run:
+          name: Install Elastic Beanstalk
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python3-pip python3-dev build-essential
+            sudo pip3 install awsebcli
+      - run:
+          name: Deploy
+          command: |
+            eb deploy
 
 workflows:
-  main:
+  deploy-api:
     jobs:
       # - build_flask_app
       # - eb/deploy:
@@ -35,16 +52,8 @@ workflows:
       #     label: version-<<pipeline.number>>
       #     requires:
       #       - build_flask_app
+  deploy-app:
+    jobs:
       - build_vite_app
-      - run: cd client/dist/; pwd;
-      - eb/deploy:
-          app-dir: ~/client/dist
-          context: aws-credentials
-          environment-name: MeowAI-Page
-          platform-version: php-8.1
-          filters:
-            branches:
-              only: flask_eb
-          label: version-<<pipeline.number>>
-          requires:
-            - build_vite_app
+          context:
+            - aws-credentials
