@@ -38,4 +38,4 @@ workflows:
   main:
     jobs:
       - build_flask_app
-      - build_
+      - build_vite_app
