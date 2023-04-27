@@ -42,7 +42,7 @@ workflows:
       - build_vite_app
       - eb/deploy:
           context: aws-credentials
-          app-dir: /client/dist/
+          app-dir: client/dist
           environment-name: MeowAI-Page
           platform-version: php-8.1
           filters:
