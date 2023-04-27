@@ -5,37 +5,41 @@ orbs:
   python: circleci/python@2.1.1
 
 jobs:
-  build_flask_app:
-    executor: python/default
+  say_hello:
     steps:
-      - checkout
-      - python/install-packages:
-          pkg-manager: pip
-      - python/install-packages:
-          pip-dependency-file: requirements.txt
-          pkg-manager: pip
-      - python/install-packages:
-          args: pytest
-          pkg-manager: pip
-          pypi-cache: false
-      - run:
-          command: |
-            pytest --version
-          name: Test
-  build_vite_app:
-    executor: node/default
-    steps:
-      - checkout
-      - run: cd client
-      - run: sudo npm install -g npm@latest
-      - node/install-packages:
-          cache-path: ~/project/node_modules
-          override-ci-command: npm install
-      - node/run:
-          npm-run: build
+      - run: echo "Hello world!"
+  # build_flask_app:
+  #   executor: python/default
+  #   steps:
+  #     - checkout
+  #     - python/install-packages:
+  #         pkg-manager: pip
+  #     - python/install-packages:
+  #         pip-dependency-file: requirements.txt
+  #         pkg-manager: pip
+  #     - python/install-packages:
+  #         args: pytest
+  #         pkg-manager: pip
+  #         pypi-cache: false
+  #     - run:
+  #         command: |
+  #           pytest --version
+  #         name: Test
+  # build_vite_app:
+  #   executor: node/default
+  #   steps:
+  #     - checkout
+  #     - run: cd client
+  #     - run: sudo npm install -g npm@latest
+  #     - node/install-packages:
+  #         cache-path: ~/project/node_modules
+  #         override-ci-command: npm install
+  #     - node/run:
+  #         npm-run: build
 
 workflows:
   main:
     jobs:
-      - build_flask_app
-      - build_vite_app
+      - say_hello
+      # - build_flask_app
+      # - build_vite_app
