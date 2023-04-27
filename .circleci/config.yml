@@ -5,10 +5,6 @@ orbs:
   python: circleci/python@2.1.1
 
 jobs:
-  # say_hello:
-  #   executor: python/default
-  #   steps:
-  #     - run: echo "Hello world!"
   build_flask_app:
     description: "Setup Flask App"
     executor: python/default
@@ -22,15 +18,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - run: cd client/; npm install; npm run build
-      - eb/deploy:
-          context: aws-credentials
-          environment-name: MeowAI-Page
-          platform-version: php-8.1
-          filters:
-            branches:
-              only: flask_eb
-          label: version-<<pipeline.number>>
+      - run: cd client/; npm install; npm run build; ls -al dist
 
 workflows:
   main:
@@ -48,3 +36,14 @@ workflows:
       #     requires:
       #       - build_flask_app
       - build_vite_app
+      - eb/deploy:
+          app-dir: ~/client/dist
+          context: aws-credentials
+          environment-name: MeowAI-Page
+          platform-version: php-8.1
+          filters:
+            branches:
+              only: flask_eb
+          label: version-<<pipeline.number>>
+          requires:
+            - build_vite_app
