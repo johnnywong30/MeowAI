@@ -37,9 +37,12 @@ workflows:
       - build_flask_app
       - eb/deploy:
           context: aws-credentials
-          application-name: MeowAI
           environment-name: MeowAI
           platform-version: python-3.7
+          filters:
+            branches:
+              only:
+                - flask_eb
+          label: version-<<pipeline.number>>
           requires:
             - build_flask_app
-      # - build_vite_app
