@@ -20,12 +20,12 @@ jobs:
 
   build_vite_app:
     executor: node/default
+    working_directory: ~/client
     steps:
       - checkout
-      - run: cd client
-      - run: sudo npm install -g npm@latest
+          path: ~/client
       - node/install-packages:
-          cache-path: ~/project/node_modules
+          cache-path: ~/client/node_modules
           override-ci-command: npm install
       - node/run:
           npm-run: build
