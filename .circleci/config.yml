@@ -5,27 +5,19 @@ orbs:
   python: circleci/python@2.1.1
 
 jobs:
-  say_hello:
-    executor: python/default
-    steps:
-      - run: echo "Hello world!"
-  # build_flask_app:
+  # say_hello:
   #   executor: python/default
   #   steps:
-  #     - checkout
-  #     - python/install-packages:
-  #         pkg-manager: pip
-  #     - python/install-packages:
-  #         pip-dependency-file: requirements.txt
-  #         pkg-manager: pip
-  #     - python/install-packages:
-  #         args: pytest
-  #         pkg-manager: pip
-  #         pypi-cache: false
-  #     - run:
-  #         command: |
-  #           pytest --version
-  #         name: Test
+  #     - run: echo "Hello world!"
+  build_flask_app:
+    description: "Setup Flask App"
+    executor: python/default
+    steps:
+      - checkout
+      - python/install-packages:
+          pip-dependency-file: requirements.txt
+          pkg-manager: pip
+
   # build_vite_app:
   #   executor: node/default
   #   steps:
@@ -41,6 +33,13 @@ jobs:
 workflows:
   main:
     jobs:
-      - say_hello
-      # - build_flask_app
+      # - say_hello
+      - build_flask_app
+      - eb/deploy:
+          context: aws-credentials
+          application-name: MeowAI
+          environment-name: MeowAI
+          platform-version: python-3.7
+          requires:
+            - build_flask_app
       # - build_vite_app
