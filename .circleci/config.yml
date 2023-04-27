@@ -34,8 +34,8 @@ jobs:
             sudo pip3 install awsebcli
       - run:
           name: Deploy
-          command: |
-            eb deploy
+          command: eb deploy
+            
 
 workflows:
   deploy-api:
@@ -55,5 +55,4 @@ workflows:
   deploy-app:
     jobs:
       - build_vite_app
-          context:
-            - aws-credentials
+          context: aws-credentials
