@@ -23,9 +23,7 @@ jobs:
     working_directory: ~/client
     steps:
       - checkout
-      - run: cd client/
-      - run: npm install
-      - run: npm run build
+      - run: cd client/; npm install; npm run build
 workflows:
   main:
     jobs:
