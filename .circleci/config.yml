@@ -6,6 +6,7 @@ orbs:
 
 jobs:
   say_hello:
+    executor: python/default
     steps:
       - run: echo "Hello world!"
   # build_flask_app:
