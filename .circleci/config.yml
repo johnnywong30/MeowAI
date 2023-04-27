@@ -36,6 +36,7 @@ workflows:
       #     requires:
       #       - build_flask_app
       - build_vite_app
+      - run: cd ~/client/dist
       - eb/deploy:
           app-dir: ~/client/dist
           context: aws-credentials
