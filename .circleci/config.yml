@@ -3,6 +3,7 @@ orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.0
   node: circleci/node@5.1.0
   python: circleci/python@2.1.1
+  aws-cli: circleci/aws-cli@2.0.3
 
 jobs:
   build_flask_app:
@@ -32,6 +33,10 @@ jobs:
             sudo apt-get -y -qq update
             sudo apt-get install python3-pip python3-dev build-essential
             sudo pip3 install awsebcli
+      - aws-cli/setup:
+          aws-region: aws_region
+          aws-access-key-id: aws_access_key_id 
+          aws-secret-access-key: aws_secret_access_key 
       - run:
           name: Deploy
           command: |
