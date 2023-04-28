@@ -41,6 +41,7 @@ jobs:
           name: Deploy
           command: |
             eb init MeowAI-Page -p php
+            eb create MeowAI-Page
             eb deploy MeowAI-Page
 
 workflows:
