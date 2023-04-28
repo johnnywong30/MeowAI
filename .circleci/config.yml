@@ -37,20 +37,20 @@ jobs:
           command: eb deploy
 
 workflows:
-  deploy-api:
-    jobs:
-      # - build_flask_app
-      # - eb/deploy:
-      #     context: aws-credentials
-      #     environment-name: MeowAI
-      #     platform-version: python-3.7
-      #     filters:
-      #       branches:
-      #         only:
-      #           - flask_eb
-      #     label: version-<<pipeline.number>>
-      #     requires:
-      #       - build_flask_app
+  # deploy-api:
+  # jobs:
+  # - build_flask_app
+  # - eb/deploy:
+  #     context: aws-credentials
+  #     environment-name: MeowAI
+  #     platform-version: python-3.7
+  #     filters:
+  #       branches:
+  #         only:
+  #           - flask_eb
+  #     label: version-<<pipeline.number>>
+  #     requires:
+  #       - build_flask_app
   deploy-app:
     jobs:
       - build_vite_app
