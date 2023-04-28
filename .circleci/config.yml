@@ -35,8 +35,8 @@ jobs:
       - run:
           name: Deploy
           command: |
-          eb init MeowAI-Page -p php
-          eb deploy
+            eb init MeowAI-Page -p php
+            eb deploy
 
 workflows:
   # deploy-api:
