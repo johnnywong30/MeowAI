@@ -34,7 +34,9 @@ jobs:
             sudo pip3 install awsebcli
       - run:
           name: Deploy
-          command: eb deploy
+          command: |
+          eb init MeowAI-Page -p php
+          eb deploy
 
 workflows:
   # deploy-api:
