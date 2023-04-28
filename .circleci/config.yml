@@ -5,6 +5,25 @@ orbs:
   python: circleci/python@2.1.1
   aws-cli: circleci/aws-cli@2.0.3
 
+workflows:
+  deploy-api:
+  jobs:
+    - build_flask_app
+    - eb/deploy:
+        context: aws-credentials
+        environment-name: MeowAI
+        platform-version: python-3.7
+        filters:
+          branches:
+            only:
+              - flask_eb
+        label: version-<<pipeline.number>>
+        requires:
+          - build_flask_app
+  # deploy-app:
+  #   jobs:
+  #     - build_vite_app
+
 jobs:
   build_flask_app:
     description: "Setup Flask App"
@@ -43,22 +62,3 @@ jobs:
             eb init MeowAI-Page -p php
             eb create MeowAI-Page
             eb deploy MeowAI-Page
-
-workflows:
-  # deploy-api:
-  # jobs:
-  # - build_flask_app
-  # - eb/deploy:
-  #     context: aws-credentials
-  #     environment-name: MeowAI
-  #     platform-version: python-3.7
-  #     filters:
-  #       branches:
-  #         only:
-  #           - flask_eb
-  #     label: version-<<pipeline.number>>
-  #     requires:
-  #       - build_flask_app
-  deploy-app:
-    jobs:
-      - build_vite_app
