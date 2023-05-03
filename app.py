@@ -78,8 +78,8 @@ def code():
     req = request.get_json()
     model="gpt-3.5-turbo"
     msg = req['user_message'].strip()
-    language = req['language'].strip()
-    msg = "In " + language + " code the following: " + msg
+    # language = req['language'].strip()
+    # msg = "In " + language + " code the following: " + msg
     print(f'User message: {msg}')
     
     chat_history.append({"role": "user", "content": msg},)

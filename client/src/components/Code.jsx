@@ -8,16 +8,17 @@ import axios from 'axios'
 const Chat = () => {
   const [inputMessage, setInputMessage] = useState(""); // holds input from user
   const [response, setResponse] = useState(''); // hold the response to the input message
+  const [isWaiting, setIsWaiting] = useState(false)
   // holds message history
 	const [messages, setMessages] = useState([ 
-    { role: "system", content: "Hi, My Name is sophiasaur" },
-    { role: "me", content: "Hey there" },
-    { role: "me", content: "Myself beebo" },
-    {
-      role: "system",
-      content:
-        "Nice to meet you. You can send me message and i'll reply you with same message."
-      }
+    { role: "system", content: "Hi, Go ahead and ask me to code anything!" },
+    // { role: "me", content: "Hey there" },
+    // { role: "me", content: "Myself beebo" },
+    // {
+    //   role: "system",
+    //   content:
+    //     "Nice to meet you. You can send me message and i'll reply you with same message."
+    //   }
     ]);
   // use effect to update history TODO:
   
@@ -35,6 +36,7 @@ const Chat = () => {
     if (!inputMessage.trim().length) {
       return;
     }
+    setIsWaiting(true)
     // get the response from MeowAI
     const { data } = await axios.post('/code', { user_message: inputMessage});
     console.log(data)
@@ -43,6 +45,7 @@ const Chat = () => {
     setResponse(data.chat_msg);
     setMessages((old) => [...old, { role: "me", content: inputMessage }]);
     setInputMessage("");
+    setIsWaiting(false)
 
     // setTimeout(() => {
     //   setMessages((old) => [...old, { role: "system", content: response }]);
@@ -70,6 +73,7 @@ const Chat = () => {
                     }}
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
+                    disabled={isWaiting}
                 />
                 <Button
                     bg="black"
@@ -80,9 +84,9 @@ const Chat = () => {
                     color: "black",
                     border: "1px solid black",
                     }}
-                    disabled={inputMessage.trim().length <= 0}
+                    disabled={inputMessage.trim().length <= 0 || isWaiting}
                     onClick={handleSendMessage}
-                >
+              >
                     Send
                 </Button>
                 </Flex>
